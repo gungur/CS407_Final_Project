@@ -94,7 +94,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -115,7 +115,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/signUpText"
             android:layout_width="wrap_content"
             android:layout_marginEnd="30dp"
             android:textSize="16sp"
@@ -123,7 +123,7 @@
             android:text="Don't have an account? " />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/signUpButton"
             android:textColor="@color/LandMarkSecondaryColor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

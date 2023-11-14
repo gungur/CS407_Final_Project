@@ -2,4 +2,10 @@
     <string name="app_name">Landmark</string>
     <string name="username_label">Username:</string>
     <string name="password_label">Password:</string>
+    <string name="email_signup_label">Email:</string>
+    <string name="username_signup_label">Username:</string>
+    <string name="password_signup_label">Password:</string>
+    <string name="password_confirm_label">Confirm Password:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
