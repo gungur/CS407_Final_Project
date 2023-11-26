@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+
 public class Home extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
@@ -17,17 +20,23 @@ public class Home extends AppCompatActivity {
     ProfileFragment profileFragment = new ProfileFragment();
     FriendsFragment friendsFragment = new FriendsFragment();
 
+    public static AppDatabase appDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Room Database
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my-database").build();
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        // make sure begins with home frag
         getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-
         bottomNavigationView.setSelectedItemId(R.id.home);
 
+        // bottom nav action
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

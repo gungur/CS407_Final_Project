@@ -147,12 +147,25 @@
         android:background="@drawable/round_button"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="58dp"
         android:text="Sign Up!"
         android:textColor="@color/LandMarkSecondaryColor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginForm" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:background="@drawable/round_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="78dp"
+        android:layout_marginRight="256dp"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginForm"
+        app:layout_constraintRight_toLeftOf="@id/signUpButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

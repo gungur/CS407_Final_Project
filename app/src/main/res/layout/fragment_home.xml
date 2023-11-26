@@ -5,11 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <!-- TODO: implement the the actual fragment -->
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:layout_centerInParent="true"/>
+        android:layout_alignParentTop="true"
+        android:queryHint="Search for locations"/>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchView"/>
+
+    <!-- TODO: Button for camera, show badges on map -->
 
 </RelativeLayout>
