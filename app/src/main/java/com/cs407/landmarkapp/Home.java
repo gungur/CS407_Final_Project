@@ -3,12 +3,14 @@ package com.cs407.landmarkapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import androidx.room.Delete;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
@@ -53,5 +55,19 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
+
+        appDatabase = AppDatabase.getInstance(this);
+        // DONT TOUCH
+        // new DeleteUserTask().execute(2);
+    }
+
+
+    private static class DeleteUserTask extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected Void doInBackground(Integer... userIds) {
+            int userId = userIds[0];
+            appDatabase.userDao().deleteUserById(userId);
+            return null;
+        }
     }
 }

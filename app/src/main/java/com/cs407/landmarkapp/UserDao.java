@@ -30,4 +30,7 @@ public interface UserDao {
 
     @Query("SELECT COUNT(*) FROM users WHERE email = :email")
     int checkEmailExists(String email);
+
+    @Query("DELETE FROM users WHERE user_id = :userId")
+    void deleteUserById(int userId);
 }

@@ -5,11 +5,82 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <!-- TODO: implement the the actual fragment -->
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/default_prof_pic" />
+
+    <!-- TODO: connect username and other info with the user database -->
     <TextView
+        android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile Fragment"
-        android:layout_centerInParent="true"/>
+        android:text="[username]"
+        android:layout_below="@id/profilePicture"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/topRightLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/profilePicture"
+        android:layout_marginEnd="16dp">
+
+        <Button
+            android:id="@+id/notificationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification"
+            android:layout_marginRight="16dp"/>
+
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/editProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:layout_below="@id/topRightLayout"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toStartOf="@id/topRightLayout"
+        android:layout_alignRight="@id/topRightLayout"/>
+
+    <TextView
+        android:id="@+id/badgesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Badges"
+        android:layout_below="@id/editProfileButton"
+        android:layout_marginTop="32dp"
+        android:layout_centerHorizontal="true"/>
+
+    <ScrollView
+        android:id="@+id/badgesScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/badgesText"
+        android:layout_marginTop="24dp">
+
+        <LinearLayout
+            android:id="@+id/badgesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Badges will be here as image views-->
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

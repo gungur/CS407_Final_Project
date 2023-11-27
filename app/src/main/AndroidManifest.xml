@@ -25,6 +25,11 @@
         android:theme="@style/Theme.LandmarkApp"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.LandmarkApp.NoActionBar" />
+        <activity
             android:name=".SignUp"
             android:exported="false" />
         <activity
@@ -43,7 +48,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="TODO" />
-
     </application>
 
 </manifest>

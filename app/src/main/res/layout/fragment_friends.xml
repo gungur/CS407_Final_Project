@@ -5,11 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <!-- TODO: implement the the actual fragment -->
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Friends Fragment"
-        android:layout_centerInParent="true"/>
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:queryHint="Search Friends"/>
+
+        <Button
+            android:id="@+id/addFriendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Friend"/>
+    </LinearLayout>
+
+    <!-- TODO: connect it with user's friend list and display friend infos on each elements in list-->
+    <ListView
+        android:id="@+id/friendsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchLayout"
+        android:divider="@android:color/secondary_text_dark"
+        android:dividerHeight="1dp"/>
 
 </RelativeLayout>

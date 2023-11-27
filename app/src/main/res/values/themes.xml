@@ -10,4 +10,10 @@
 
 
     <style name="Theme.LandmarkApp" parent="Base.Theme.LandmarkApp" />
+    <style name="Theme.LandmarkApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.LandmarkApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.LandmarkApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

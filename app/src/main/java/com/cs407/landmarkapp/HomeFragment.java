@@ -17,6 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+// TODO: create database of badges and show them on map; camera button and function; AR
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap googleMap;
@@ -25,7 +26,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mapView = view.findViewById(R.id.mapView);

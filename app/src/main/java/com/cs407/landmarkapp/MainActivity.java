@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    // TODO: check box for remember login
+    // TODO: check box for remember username and password so next time the user opens the app, just needs to click "login"
     private AppDatabase appDatabase;
     private EditText usernameInput;
     private EditText passwordInput;
