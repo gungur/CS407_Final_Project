@@ -3,6 +3,7 @@ package com.cs407.landmarkapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -60,12 +61,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(User user) {
             if (user != null) {
+                saveUserIdToPreferences(user.getUserId());
                 Intent intent = new Intent(MainActivity.this, Home.class);
                 startActivity(intent);
             } else {
                 Toast.makeText(MainActivity.this, "User info incorrect.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void saveUserIdToPreferences(int userId){
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("userId", userId).apply();
+
+
     }
 
 }
