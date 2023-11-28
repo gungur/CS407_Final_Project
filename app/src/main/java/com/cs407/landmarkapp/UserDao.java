@@ -20,7 +20,7 @@ public interface UserDao {
     void deleteUser(User user);
 
     @Query("SELECT * FROM users WHERE user_id = :userId")
-    LiveData<User> getUserById(String userId);
+    LiveData<User> getUserById(int userId);
 
     @Query("SELECT * FROM users WHERE username = :username AND password = :password")
     User login(String username, String password);
