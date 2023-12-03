@@ -71,10 +71,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveUserIdToPreferences(int userId){
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("userId", userId).apply();
-
 
     }
 
