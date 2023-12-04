@@ -8,11 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
 
 import java.util.ArrayList;
@@ -21,7 +27,9 @@ import java.util.stream.Collectors;
 
 public class FriendsFragment extends Fragment {
     private List<User> userFriends = new ArrayList<>();
-    AppDatabase appDatabase;
+    private AppDatabase appDatabase;
+    private String searchInput;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,8 +45,8 @@ public class FriendsFragment extends Fragment {
             public void onChanged(User user) {
                 if(user == null) return;
 
-                if ((user.getFriends() == null || user.getFriends().size() == 0) && userFriends.isEmpty()) {
-                    generateTestFriends();
+                if ((user.getFriends() == null || user.getFriends().size() == 0)) {
+                     if (userFriends.isEmpty()) generateTestFriends();
                 } else {
                     for (int friendId : user.getFriends()) {
                         appDatabase.userDao().getUserById(friendId).observe(getViewLifecycleOwner(), new Observer<User>() {
@@ -64,11 +72,33 @@ public class FriendsFragment extends Fragment {
      * @param friendsToDisplay
      */
     private void displayFriends(List<User> friendsToDisplay) {
+        TextView noMatchingFriendsTextView = getView().findViewById(R.id.noMatchingFriendsTextView);
+
+        ListView friendsListView = getView().findViewById(R.id.friendsListView);
+
+        if(noMatchingFriendsTextView != null && friendsListView == null ){
+
+            RelativeLayout friendsFragmentParent = (RelativeLayout) noMatchingFriendsTextView.getParent();
+
+            int viewIndex = friendsFragmentParent.indexOfChild(noMatchingFriendsTextView);
+
+            friendsFragmentParent.removeView(noMatchingFriendsTextView);
+            friendsListView = new ListView(requireContext());
+            friendsListView.setId(R.id.friendsListView);
+            friendsFragmentParent.addView(friendsListView, viewIndex);
+
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (friendsListView.getLayoutParams());
+           params.addRule(RelativeLayout.BELOW, R.id.searchLayout);
+
+
+
+        }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1,
                 friendsToDisplay.stream().map(friend -> friend.getUsername()).collect(Collectors.toList()));
 
-        ListView friendsListView = getView().findViewById(R.id.friendsListView);
+        friendsListView = getView().findViewById(R.id.friendsListView);
+
 
         friendsListView.setAdapter(arrayAdapter);
 
@@ -95,6 +125,7 @@ public class FriendsFragment extends Fragment {
 
         SearchView friendSearchView = view.findViewById(R.id.searchView);
 
+
         /*
          Handles search logic
          Everytime input changes, adjust the friends the display by filtering by search input change
@@ -108,12 +139,63 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                displayFriends(userFriends.stream()
+                searchInput = newText;
+
+                List<User> resultsMatchingInput = userFriends.stream()
                         .filter(friend -> friend.getUsername().toLowerCase().contains(newText.toLowerCase()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList());
+
+                if(resultsMatchingInput.size() > 0){
+                    displayFriends(resultsMatchingInput);
+                }else{
+                   displayNoMatchingFriends();
+                }
+
                 return true;
             }
         });
 
+        Button addFriendBtn = view.findViewById(R.id.addFriendButton);
+
+        addFriendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
     }
+
+    private void displayNoMatchingFriends() {
+
+        ListView friendsListView = getView().findViewById(R.id.friendsListView);
+
+        if(friendsListView != null) {
+
+
+            RelativeLayout friendsFragmentParent = (RelativeLayout) friendsListView.getParent();
+
+            int viewIndex = friendsFragmentParent.indexOfChild(friendsListView);
+
+            friendsFragmentParent.removeView(friendsListView);
+
+            TextView noMatchingFriendsTextView = new TextView(requireContext());
+            noMatchingFriendsTextView.setId(R.id.noMatchingFriendsTextView);
+            noMatchingFriendsTextView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            ));
+            noMatchingFriendsTextView.setTextSize(16);
+
+            noMatchingFriendsTextView.setText("No matching friends found");
+
+            friendsFragmentParent.addView(noMatchingFriendsTextView, viewIndex);
+             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (noMatchingFriendsTextView.getLayoutParams());
+             params.addRule(RelativeLayout.BELOW, R.id.searchLayout);
+            System.out.println("he");
+        }
+    }
+
+
 }
