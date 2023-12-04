@@ -37,7 +37,7 @@ public class FriendsFragment extends Fragment {
             public void onChanged(User user) {
                 if(user == null) return;
 
-                if (user.getFriends() == null || user.getFriends().size() == 0) {
+                if ((user.getFriends() == null || user.getFriends().size() == 0) && userFriends.isEmpty()) {
                     generateTestFriends();
                 } else {
                     for (int friendId : user.getFriends()) {
