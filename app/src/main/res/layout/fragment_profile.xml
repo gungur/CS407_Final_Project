@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,10 +19,13 @@
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="[username]"
         android:layout_below="@id/profilePicture"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="[username]"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/topRightLayout"
@@ -60,9 +64,10 @@
         android:id="@+id/badgesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Badges"
+        android:text="@string/badge_container_label"
         android:layout_below="@id/editProfileButton"
         android:layout_marginTop="32dp"
+        android:textSize="24dp"
         android:layout_centerHorizontal="true"/>
 
     <ScrollView
@@ -78,8 +83,49 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Badges will be here as image views-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:id="@+id/uwCSBadgeContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/uw_cs_building_badge" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:gravity="center"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/cs_building_badge_label" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/union_South_Badge_Container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/union_south_badge" />
+
+                <TextView
+                    android:id="@+id/union_south_textView"
+                    android:gravity="center"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/union_south_badge_label" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

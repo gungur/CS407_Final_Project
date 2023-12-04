@@ -97,4 +97,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="cs_building_badge_label">UW CS Building Badge</string>
+    <string name="union_south_badge_label">Union South Badge</string>
+    <string name="badge_container_label"><u>Badges</u></string>
 </resources>
