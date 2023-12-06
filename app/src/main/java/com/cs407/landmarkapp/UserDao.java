@@ -11,7 +11,7 @@ import androidx.room.Update;
 public interface UserDao {
 
     @Insert
-    void insertUser(User user);
+    long insertUser(User user);
 
     @Update
     void updateUser(User user);

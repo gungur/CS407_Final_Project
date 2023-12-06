@@ -100,4 +100,7 @@
     <string name="cs_building_badge_label">UW CS Building Badge</string>
     <string name="union_south_badge_label">Union South Badge</string>
     <string name="badge_container_label"><u>Badges</u></string>
+    <string name="profile_username_placeholder">[username]</string>
+    <string name="friend_username_placeholder">[friend-username]</string>
+    <string name="cancel">Cancel</string>
 </resources>
