@@ -1,7 +1,11 @@
 package com.cs407.landmarkapp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -18,6 +22,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -52,6 +58,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap map) {
         googleMap = map;
+
+        LatLng CSBuilding = new LatLng(43.07122779948943, -89.40657139659501);
+        MarkerOptions CSBlgBadge = new MarkerOptions().title("CS Building").position(CSBuilding)
+                .icon(BitmapFromVector(getContext(), R.drawable.uw_cs_building_badge));
+        googleMap.addMarker(CSBlgBadge);
 
         displayMyLocation();
 
@@ -111,6 +122,29 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 displayMyLocation();
             }
         }
+    }
+
+    private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
+        // generates a drawable.
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+
+        // sets bounds to vector drawable
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight());
+
+        // creates bitmap for drawable
+        Bitmap bitmap = Bitmap.createBitmap(
+                vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        // adds bitmap in canvas
+        Canvas canvas = new Canvas(bitmap);
+
+        // draws vector drawable in canvas
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }
