@@ -61,7 +61,6 @@ public class Home extends AppCompatActivity {
         // new DeleteUserTask().execute(2);
     }
 
-
     private static class DeleteUserTask extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... userIds) {
@@ -70,4 +69,5 @@ public class Home extends AppCompatActivity {
             return null;
         }
     }
+
 }
