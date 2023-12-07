@@ -75,7 +75,7 @@ public class FriendsFragment extends Fragment {
      * First it checks to see if the noMatchingFriendsTextView is there, if so, then it will remove it
      * and the replace it with the list view.
      * Then will insert friendsToDisplay into the friends list view.
-     * @param friendsToDisplay
+     * @param friendsToDisplay list of user friends to display
      */
     private void displayFriends(List<User> friendsToDisplay) {
         TextView noMatchingFriendsTextView = getView().findViewById(R.id.noMatchingFriendsTextView);
@@ -184,9 +184,6 @@ public class FriendsFragment extends Fragment {
             public void onClick(View view) {}
         });
 
-        ListView friendsListView = view.findViewById(R.id.friendsListView);
-
-
 
     }
 
@@ -211,7 +208,7 @@ public class FriendsFragment extends Fragment {
             ));
             noMatchingFriendsTextView.setTextSize(16);
 
-            noMatchingFriendsTextView.setText("No matching friends found");
+            noMatchingFriendsTextView.setText(R.string.friends_not_found);
 
             friendsFragmentParent.addView(noMatchingFriendsTextView, viewIndex);
              RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (noMatchingFriendsTextView.getLayoutParams());
