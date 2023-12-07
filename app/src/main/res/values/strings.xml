@@ -104,6 +104,6 @@
     <string name="friend_username_placeholder">[friend-username]</string>
     <string name="cancel">Cancel</string>
     <string name="map">Map</string>
-    <string name="badge_dialogue_label">Badges: %1$d</string>
+    <string name="badge_dialog_label">Badges: %1$d</string>
     <string name="friends_not_found">No matching friends found</string>
 </resources>

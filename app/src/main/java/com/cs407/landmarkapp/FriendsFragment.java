@@ -109,7 +109,7 @@ public class FriendsFragment extends Fragment {
         friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                displayFriendDialogue(friendsToDisplay.get(position).getUserId());
+                displayFriendDialog(friendsToDisplay.get(position));
             }
         });
 
@@ -216,14 +216,10 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    private void displayFriendDialogue(int selectedFriendId) {
-        FriendDialogue friendDialogue = new FriendDialogue();
+    private void displayFriendDialog(User selectedFriend) {
+        FriendDialog friendDialog = FriendDialog.newInstance(selectedFriend);
 
-        Bundle friendDialogueArgs = new Bundle();
-        friendDialogueArgs.putInt("friendId", selectedFriendId);
-        friendDialogue.setArguments(friendDialogueArgs);
-
-        friendDialogue.show(getActivity().getSupportFragmentManager(),"Friend Dialogue");
+        friendDialog.show(getActivity().getSupportFragmentManager(),"Friend Dialog");
     }
 
     private class AddFriends extends AsyncTask<User, Void, Void> {

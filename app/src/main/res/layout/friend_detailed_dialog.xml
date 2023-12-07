@@ -31,7 +31,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:text="@string/friend_username_placeholder"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/badgeInfoLayout"
@@ -46,8 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="18dp"
-                android:text="@string/badge_dialogue_label" />
+                android:textSize="18sp"
+                android:text="" />
         </LinearLayout>
     </LinearLayout>
 
