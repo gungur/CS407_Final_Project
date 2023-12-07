@@ -32,7 +32,6 @@ public class FriendsFragment extends Fragment {
     private final List<User> userFriends = new ArrayList<>();
     private AppDatabase appDatabase;
     private String searchInput;
-
     private User appUser;
 
     @Override
@@ -107,6 +106,13 @@ public class FriendsFragment extends Fragment {
 
         friendsListView.setAdapter(arrayAdapter);
 
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                displayFriendDialogue(friendsToDisplay.get(position).getUserId());
+            }
+        });
+
     }
 
     private int getUserIdFromPrefs() {
@@ -180,12 +186,7 @@ public class FriendsFragment extends Fragment {
 
         ListView friendsListView = view.findViewById(R.id.friendsListView);
 
-        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                displayFriendDialogue(userFriends.get(position).getUsername());
-            }
-        });
+
 
     }
 
@@ -218,11 +219,11 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    private void displayFriendDialogue(String friendUsername) {
+    private void displayFriendDialogue(int selectedFriendId) {
         FriendDialogue friendDialogue = new FriendDialogue();
 
         Bundle friendDialogueArgs = new Bundle();
-        friendDialogueArgs.putString("friendUsername", friendUsername);
+        friendDialogueArgs.putInt("friendId", selectedFriendId);
         friendDialogue.setArguments(friendDialogueArgs);
 
         friendDialogue.show(getActivity().getSupportFragmentManager(),"Friend Dialogue");
