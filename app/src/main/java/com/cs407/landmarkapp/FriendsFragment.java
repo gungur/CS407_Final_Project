@@ -16,11 +16,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
+
+import com.cs407.landmarkapp.custom_adapters.SentFriendListAdapter;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,18 +46,19 @@ public class FriendsFragment extends Fragment {
 
         appDatabase = AppDatabase.getInstance(this.getContext());
 
+
         /* Since the LiveData Object that is returned, gets returned Asynchronously, we need an observer
         to watch for when it does eventually resolve into the User object.
          */
         appDatabase.userDao().getUserById(getUserIdFromPrefs()).observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                if(user == null) return;
+                if (user == null) return;
                 appUser = user;
 
                 if ((user.getFriends() == null || user.getFriends().size() == 0)) {
-                     if (userFriends.isEmpty()) generateTestFriends();
-                } else if(userFriends.isEmpty()){
+                    if (userFriends.isEmpty()) generateTestFriends();
+                } else if (userFriends.isEmpty()) {
                     for (int friendId : user.getFriends()) {
                         appDatabase.userDao().getUserById(friendId).observe(getViewLifecycleOwner(), new Observer<User>() {
                             @Override
@@ -75,6 +82,7 @@ public class FriendsFragment extends Fragment {
      * First it checks to see if the noMatchingFriendsTextView is there, if so, then it will remove it
      * and the replace it with the list view.
      * Then will insert friendsToDisplay into the friends list view.
+     *
      * @param friendsToDisplay list of user friends to display
      */
     private void displayFriends(List<User> friendsToDisplay) {
@@ -82,20 +90,14 @@ public class FriendsFragment extends Fragment {
 
         ListView friendsListView = getView().findViewById(R.id.friendsListView);
 
-        if(noMatchingFriendsTextView != null && friendsListView == null ){
+        if (noMatchingFriendsTextView != null && friendsListView == null) {
 
-            RelativeLayout friendsFragmentParent = (RelativeLayout) noMatchingFriendsTextView.getParent();
+           FrameLayout frameLayout = getView().findViewById(R.id.contentFrame);
 
-            int viewIndex = friendsFragmentParent.indexOfChild(noMatchingFriendsTextView);
-
-            friendsFragmentParent.removeView(noMatchingFriendsTextView);
+            frameLayout.removeAllViews();
             friendsListView = new ListView(requireContext());
             friendsListView.setId(R.id.friendsListView);
-            friendsFragmentParent.addView(friendsListView, viewIndex);
-
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (friendsListView.getLayoutParams());
-           params.addRule(RelativeLayout.BELOW, R.id.searchLayout);
-
+            frameLayout.addView(friendsListView);
 
         }
 
@@ -140,12 +142,12 @@ public class FriendsFragment extends Fragment {
 
         }
 
-        new AddFriends().execute(userFriends.stream().toArray(User[]::new));
+        new AddTestFriends().execute(userFriends.stream().toArray(User[]::new));
 
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         SearchView friendSearchView = view.findViewById(R.id.searchView);
 
         /*
@@ -167,10 +169,10 @@ public class FriendsFragment extends Fragment {
                         .filter(friend -> friend.getUsername().toLowerCase().contains(newText.toLowerCase()))
                         .collect(Collectors.toList());
 
-                if(resultsMatchingInput.size() > 0){
+                if (resultsMatchingInput.size() > 0) {
                     displayFriends(resultsMatchingInput);
-                }else{
-                   displayNoMatchingFriends();
+                } else {
+                    displayNoMatchingFriends();
                 }
 
                 return true;
@@ -181,7 +183,84 @@ public class FriendsFragment extends Fragment {
 
         addFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {}
+            public void onClick(View view) {
+                for(User friend : userFriends){
+                    if(searchInput.equals(friend.getUsername())){
+                        Toast.makeText(requireContext(), "Friend is already added", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                new ValidatePendingFriend().execute(searchInput);
+            }
+        });
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                LayoutInflater layoutInflater = requireActivity().getLayoutInflater();
+                FrameLayout frameLayout = view.findViewById(R.id.contentFrame);
+                if (tab.getPosition() == 0) {
+
+                    if(frameLayout.getChildAt(0) != (ListView) view.findViewById(R.id.friendsListView)){
+                        frameLayout.removeAllViews();
+                        ListView listView = new ListView(requireContext());
+                        listView.setId(R.id.friendsListView);
+                        frameLayout.addView(listView);
+                        displayFriends(userFriends);
+
+                    }
+
+                } else if (tab.getPosition() == 1) {
+
+                    if (frameLayout.getChildAt(0) != (ScrollView) view.findViewById(R.id.pendingFriendsRoot)) {
+                        frameLayout.removeAllViews();
+                        layoutInflater.inflate(R.layout.pending_friends, frameLayout);
+
+                    }
+                    ListView sentFriendsView = view.findViewById(R.id.sentFriendsListView);
+                    List<User> userSentFriendRequests = new ArrayList<>();
+                    for (int userSentFriendRequestId : appUser.getSentFriendRequests()) {
+                        appDatabase.userDao().getUserById(userSentFriendRequestId).observe(getViewLifecycleOwner(),
+                                new Observer<User>() {
+                                    @Override
+                                    public void onChanged(User user) {
+                                        userSentFriendRequests.add(user);
+                                        SentFriendListAdapter sentFriendListAdapter = new SentFriendListAdapter(getContext(), userSentFriendRequests);
+
+                                        sentFriendsView.setAdapter(sentFriendListAdapter);
+
+                                    }
+                                });
+//                        ListView incomingFriendsView = view.findViewById(R.id.incomingFriendsListView);
+//                        List<User> incomingFriendRequests = new ArrayList<>();
+//                        for (int userIncomingFriendRequests : appUser.getIncomingFriendRequests()) {
+//                            appDatabase.userDao().getUserById(userIncomingFriendRequests).observe(getViewLifecycleOwner(),
+//                                    new Observer<User>() {
+//                                        @Override
+//                                        public void onChanged(User user) {
+//                                            incomingFriendRequests.add(user);
+//                                            SentFriendListAdapter sentFriendListAdapter = new SentFriendListAdapter(getContext(), incomingFriendRequests);
+//                                            incomingFriendsView.setAdapter(sentFriendListAdapter);
+//
+//                                        }
+//                                    });
+                        //}
+
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
         });
 
 
@@ -191,45 +270,34 @@ public class FriendsFragment extends Fragment {
 
         ListView friendsListView = getView().findViewById(R.id.friendsListView);
 
-        if(friendsListView != null) {
+        if (friendsListView != null) {
 
-
-            RelativeLayout friendsFragmentParent = (RelativeLayout) friendsListView.getParent();
-
-            int viewIndex = friendsFragmentParent.indexOfChild(friendsListView);
-
-            friendsFragmentParent.removeView(friendsListView);
-
+            FrameLayout frameLayout = getView().findViewById(R.id.contentFrame);
+            frameLayout.removeAllViews();
             TextView noMatchingFriendsTextView = new TextView(requireContext());
             noMatchingFriendsTextView.setId(R.id.noMatchingFriendsTextView);
-            noMatchingFriendsTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-            ));
             noMatchingFriendsTextView.setTextSize(16);
 
             noMatchingFriendsTextView.setText(R.string.friends_not_found);
+            frameLayout.addView(noMatchingFriendsTextView);
 
-            friendsFragmentParent.addView(noMatchingFriendsTextView, viewIndex);
-             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) (noMatchingFriendsTextView.getLayoutParams());
-             params.addRule(RelativeLayout.BELOW, R.id.searchLayout);
         }
     }
 
     private void displayFriendDialog(User selectedFriend) {
         FriendDialog friendDialog = FriendDialog.newInstance(selectedFriend);
 
-        friendDialog.show(getActivity().getSupportFragmentManager(),"Friend Dialog");
+        friendDialog.show(getActivity().getSupportFragmentManager(), "Friend Dialog");
     }
 
-    private class AddFriends extends AsyncTask<User, Void, Void> {
+    private class AddTestFriends extends AsyncTask<User, Void, Void> {
 
         @Override
         protected Void doInBackground(User... friendsToSave) {
             List<Integer> friendIds = new ArrayList<>();
 
-            for(User friend : friendsToSave){
-                int idOfSavedFriend =  (int) appDatabase.userDao().insertUser(friend);
+            for (User friend : friendsToSave) {
+                int idOfSavedFriend = (int) appDatabase.userDao().insertUser(friend);
                 friendIds.add(idOfSavedFriend);
             }
             appUser.setFriends(friendIds);
@@ -239,7 +307,64 @@ public class FriendsFragment extends Fragment {
 
     }
 
+    private class AddTestUsers extends AsyncTask<Void, Void, Void>{
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String[] testUsers = {"Luke", "Alejandra", "Xavier", "Liz"};
+            for(String user : testUsers){
+                User testUser = new User(user, "testUserPassword2023", user+"@gmail.com", new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>());
+                appDatabase.userDao().insertUser(testUser);
+            }
 
+            return null;
+        }
+    }
 
+    private class ValidatePendingFriend extends AsyncTask<String, Void, User>{
+
+        @Override
+        protected User doInBackground(String... strings) {
+            String friendUsername = strings[0];
+            appDatabase.userDao().checkUsernameExists(friendUsername);
+//            User pendingFriend = appDatabase.userDao().getUserByUsername(friendUsername).getValue();
+//            if(appUser.getSentFriendRequests() == null){
+//                appUser.setSentFriendRequests(new ArrayList<>());
+//            }
+//            appUser.getSentFriendRequests().add(pendingFriend.getUserId());
+//            if (pendingFriend.getIncomingFriendRequests() == null){
+//                pendingFriend.setIncomingFriendRequests(new ArrayList<>());
+//            }
+//            pendingFriend.getIncomingFriendRequests().add(appUser.getUserId());
+
+            return appDatabase.userDao().getUserByUsername(friendUsername);
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+           if(user != null){
+               new AddFriend().execute(user);
+           }
+        }
+    }
+
+    private class AddFriend extends AsyncTask<User, Void, Void>{
+
+        @Override
+        protected Void doInBackground(User... users) {
+            User pendingFriend = users[0];
+            if(appUser.getSentFriendRequests() == null){
+                appUser.setSentFriendRequests(new ArrayList<>());
+            }
+            appUser.getSentFriendRequests().add(pendingFriend.getUserId());
+            if (pendingFriend.getIncomingFriendRequests() == null){
+                pendingFriend.setIncomingFriendRequests(new ArrayList<>());
+            }
+            pendingFriend.getIncomingFriendRequests().add(appUser.getUserId());
+            appDatabase.userDao().updateUser(appUser);
+            appDatabase.userDao().updateUser(pendingFriend);
+            return null;
+        }
+    }
 }

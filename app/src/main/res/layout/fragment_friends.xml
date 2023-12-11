@@ -6,10 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pending Friends" />
+
+
+    </com.google.android.material.tabs.TabLayout>
+
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tabs"
         android:orientation="horizontal"
         android:padding="16dp">
 
@@ -25,15 +45,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Friend"/>
+
     </LinearLayout>
 
-    <!-- TODO: connect it with user's friend list and display friend infos on each elements in list-->
-    <ListView
-        android:id="@+id/friendsListView"
+    <FrameLayout
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchLayout"
-        android:divider="@android:color/secondary_text_dark"
-        android:dividerHeight="1dp"/>
+        android:layout_below="@id/searchLayout">
+
+        <ListView
+            android:id="@+id/friendsListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/secondary_text_dark"
+            android:dividerHeight="1dp">
+
+        </ListView>
+    </FrameLayout>
+
+    <!-- TODO: connect it with user's friend list and display friend infos on each elements in list-->
 
 </RelativeLayout>
