@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    // TODO: check box for remember username and password so next time the user opens the app, just needs to click "login"
     private AppDatabase appDatabase;
     private EditText usernameInput;
     private EditText passwordInput;
+    private String username;
+    private String password;
+    private Switch saveSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +27,18 @@ public class MainActivity extends AppCompatActivity {
 
         appDatabase = AppDatabase.getInstance(this);
 
+        SharedPreferences sp = getSharedPreferences("userInfo",MODE_PRIVATE);
+        username = sp.getString("username",null);
+        password = sp.getString("password",null);
+
+        if(password != null && username != null){
+            new LoginTask().execute(username, password);
+        }
+
         Button loginButton = findViewById(R.id.loginButton);
         Button signUpButton = findViewById(R.id.signUpButton);
+
+        saveSwitch = findViewById(R.id.saveLogin);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 EditText usernameInput = findViewById(R.id.usernameLoginInput);
                 EditText passwordInput = findViewById(R.id.passwordLoginInput);
 
-                String username = usernameInput.getText().toString();
-                String password = passwordInput.getText().toString();
+                username = usernameInput.getText().toString();
+                password = passwordInput.getText().toString();
 
                 new LoginTask().execute(username, password);
             }
@@ -62,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(User user) {
             if (user != null) {
                 saveUserIdToPreferences(user.getUserId());
+                if(saveSwitch.isChecked()) {
+                    saveLoginInfo(username, password);
+                }
                 Intent intent = new Intent(MainActivity.this, Home.class);
                 startActivity(intent);
             } else {
@@ -74,7 +90,15 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("userId", userId).apply();
+    }
 
+    private void saveLoginInfo(String username, String password){
+
+        SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", username);
+        editor.putString("password",password);
+        editor.apply();
     }
 
 }
