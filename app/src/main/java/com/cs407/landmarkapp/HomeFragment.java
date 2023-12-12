@@ -30,13 +30,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
+
 // TODO: create database of badges and show them on map; camera button and function; AR
+
+// TODO: constantly update current location and calculate distance away from markers
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private MapView mapView;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 12;
+    private ArrayList<MarkerOptions> badgeList = new ArrayList<>();
+    private LatLng mLastKnownLocationLatLng;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +74,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         MarkerOptions USouthBadge = new MarkerOptions().title("Union South").position(UnionSouth)
                 .icon(BitmapFromVector(getContext(), R.drawable.union_south_badge));
         googleMap.addMarker(USouthBadge);
+
+        badgeList.add(CSBlgBadge);
+        badgeList.add(USouthBadge);
 
         displayMyLocation();
 
@@ -108,7 +117,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     task -> {
                         Location mLastKnownLocation = task.getResult();
                         if (task.isSuccessful() && mLastKnownLocation != null) {
-                            LatLng mLastKnownLocationLatLng =
+                            mLastKnownLocationLatLng =
                                     new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
                             googleMap.addMarker(new MarkerOptions().position(mLastKnownLocationLatLng).title("Current"));
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLocationLatLng, 10));
