@@ -140,7 +140,7 @@ public class FriendsFragment extends Fragment {
 
             String friendEmail = testFriendUserNames[i] + i + "@gmail.com";
             String password = "testPASSWORD54389";
-            List<Integer> friendsOfUserFriend = new ArrayList<>();
+            List<Integer> friendsOfUserFriend = Arrays.asList(appUser.getUserId());
 
 
             userFriends.add(new User(testFriendUserNames[i], password,
