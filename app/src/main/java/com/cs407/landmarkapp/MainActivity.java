@@ -27,12 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
         appDatabase = AppDatabase.getInstance(this);
 
+        EditText usernameInput = findViewById(R.id.usernameLoginInput);
+        EditText passwordInput = findViewById(R.id.passwordLoginInput);
+
         SharedPreferences sp = getSharedPreferences("userInfo",MODE_PRIVATE);
         username = sp.getString("username",null);
         password = sp.getString("password",null);
 
         if(password != null && username != null){
             new LoginTask().execute(username, password);
+            usernameInput.setText(username);
+            passwordInput.setText(password);
         }
 
         Button loginButton = findViewById(R.id.loginButton);
@@ -43,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText usernameInput = findViewById(R.id.usernameLoginInput);
-                EditText passwordInput = findViewById(R.id.passwordLoginInput);
 
                 username = usernameInput.getText().toString();
                 password = passwordInput.getText().toString();
