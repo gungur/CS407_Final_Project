@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    // TODO: List of things in settings, connect the list with xml
-
     private AppDatabase appDatabase;
     private User user = null;
     @Override
@@ -28,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(this);
 
         LinearLayout usernameLayout = findViewById(R.id.username);
+        LinearLayout changePasswordLayout = findViewById(R.id.changePassword);
 
         TextView usernameText = (TextView) findViewById(R.id.usernameTxt);
         TextView emailText = (TextView) findViewById(R.id.emailTxt);
@@ -73,6 +72,14 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SettingsActivity.this,Home.class);
+                startActivity(intent);
+            }
+        });
+
+        changePasswordLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this,ChangePassword.class);
                 startActivity(intent);
             }
         });

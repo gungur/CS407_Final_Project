@@ -25,6 +25,9 @@
         android:theme="@style/Theme.LandmarkApp"
         tools:targetApi="31">
         <activity
+            android:name=".ChangePassword"
+            android:exported="false" />
+        <activity
             android:name=".ChangeUsername"
             android:exported="false" />
         <activity
@@ -50,7 +53,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAyic3Iy6ydabYxcBoSd_WhspT8jJPunD0" />
+            android:value="" />
     </application>
 
 </manifest>

@@ -26,10 +26,10 @@ public class ChangeUsername extends AppCompatActivity {
 
         appDatabase = AppDatabase.getInstance(this);
 
-        Button changeBtn = findViewById(R.id.changeBtn);
+        Button changeBtn = findViewById(R.id.changePasswordBtn);
         TextView currUsernameTxt = findViewById(R.id.currUsernameTxt);
         newUsernameTxt = findViewById(R.id.newUsernameTxt);
-        TextView backArrow = findViewById(R.id.backArrowChangeUsername);
+        TextView backArrow = findViewById(R.id.backArrowChangePassword);
 
         SharedPreferences sharedPreferences = getSharedPreferences("userInfo",MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId",-1);
@@ -103,6 +103,10 @@ public class ChangeUsername extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             Toast.makeText(ChangeUsername.this, "Username Changed!", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences sp = getSharedPreferences("userInfo",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("username",newUsername).commit();
 
             Intent intent = new Intent(ChangeUsername.this, SettingsActivity.class);
             startActivity(intent);
