@@ -46,7 +46,7 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         appDatabase = AppDatabase.getInstance(this.getContext());
-        //new AddTestUsers().execute();
+
 
 
         /* Since the LiveData Object that is returned, gets returned Asynchronously, we need an observer
@@ -61,7 +61,10 @@ public class FriendsFragment extends Fragment {
                // if(getView().findViewById(R.id.friendsListView) != null || getView().findViewById(R.id.noMatchingFriendsTextView) != null) {
 
                     if ((user.getFriends() == null || user.getFriends().size() == 0)) {
-                        if (userFriends.isEmpty()) generateTestFriends();
+                        if (userFriends.isEmpty()){
+                            generateTestFriends();
+                            new AddTestUsers().execute();
+                        }
                     } else {
                         appDatabase.userDao().getUsersByIds(user.getFriends()).observe(getViewLifecycleOwner(), new Observer<List<User>>() {
                             @Override
@@ -352,9 +355,16 @@ public class FriendsFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             String[] testUsers = {"Luke", "Alejandra", "Xavier", "Liz"};
             for(String user : testUsers){
-                User testUser = new User(user, "testUserPassword2023", user+"@gmail.com", new ArrayList<>(), new ArrayList<>(),
+                List<Integer> sentFriendRequestList = new ArrayList<>();
+                if(user.equals("Luke") || user.equals("Alejandra")){//for demo purposes
+
+                    sentFriendRequestList.add(Integer.valueOf(appUser.getUserId()));
+                }
+                User testUser = new User(user, "testUserPassword2023", user+"@gmail.com", new ArrayList<>(), sentFriendRequestList,
                 new ArrayList<>(), new ArrayList<>());
-                appDatabase.userDao().insertUser(testUser);
+                int insertedUserId = (int) appDatabase.userDao().insertUser(testUser);
+                appUser.getIncomingFriendRequests().add(insertedUserId);
+                appDatabase.userDao().updateUser(appUser);
             }
 
             return null;
