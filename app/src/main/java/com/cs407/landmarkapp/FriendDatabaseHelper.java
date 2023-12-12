@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 public class FriendDatabaseHelper {
 
-    private User appUser;
-    private AppDatabase appDatabase;
+    private final User appUser;
+    private final AppDatabase appDatabase;
     private final Context context;
     public FriendDatabaseHelper(User appUser, Context context){
         this.context = context;
@@ -34,8 +34,8 @@ public class FriendDatabaseHelper {
         protected Void doInBackground(User... users) {
             User friendRequestSender = users[0];
 
-            friendRequestSender.getSentFriendRequests().remove(new Integer(appUser.getUserId()));
-            appUser.getIncomingFriendRequests().remove(new Integer(friendRequestSender.getUserId()));
+            friendRequestSender.getSentFriendRequests().remove(Integer.valueOf(appUser.getUserId()));
+            appUser.getIncomingFriendRequests().remove(Integer.valueOf(friendRequestSender.getUserId()));
 
             appUser.getFriends().add(friendRequestSender.getUserId());
             friendRequestSender.getFriends().add(appUser.getUserId());
@@ -52,7 +52,7 @@ public class FriendDatabaseHelper {
         protected Void doInBackground(User... users) {
             User friendRequestSender = users[0];
 
-            appUser.getIncomingFriendRequests().remove(new Integer(friendRequestSender.getUserId()));
+            appUser.getIncomingFriendRequests().remove(Integer.valueOf(friendRequestSender.getUserId()));
             appDatabase.userDao().updateUser(appUser);
 
             return null;
@@ -68,8 +68,8 @@ public class FriendDatabaseHelper {
         @Override
         protected Void doInBackground(User... users) {
             User friendRequestRecipient = users[0];
-            appUser.getSentFriendRequests().remove(new Integer(friendRequestRecipient.getUserId()));
-            friendRequestRecipient.getIncomingFriendRequests().remove(new Integer(appUser.getUserId()));
+            appUser.getSentFriendRequests().remove(Integer.valueOf(friendRequestRecipient.getUserId()));
+            friendRequestRecipient.getIncomingFriendRequests().remove(Integer.valueOf(appUser.getUserId()));
             appDatabase.userDao().updateUser(appUser);
             appDatabase.userDao().updateUser(friendRequestRecipient);
             return null;

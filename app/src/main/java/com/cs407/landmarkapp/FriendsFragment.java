@@ -30,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -132,7 +133,7 @@ public class FriendsFragment extends Fragment {
 
             List<Integer> badgeList = random.nextInt(2) == 1
                     ? Arrays.asList(R.drawable.uw_cs_building_badge, R.drawable.union_south_badge)
-                    : Arrays.asList(R.drawable.union_south_badge);
+                    : Collections.singletonList(R.drawable.union_south_badge);
 
             String friendEmail = testFriendUserNames[i] + i + "@gmail.com";
             String password = "testPASSWORD54389";
@@ -212,7 +213,7 @@ public class FriendsFragment extends Fragment {
                 FrameLayout frameLayout = view.findViewById(R.id.contentFrame);
                 if (tab.getPosition() == 0) {
 
-                    if(frameLayout.getChildAt(0) != (ListView) view.findViewById(R.id.friendsListView)){
+                    if(frameLayout.getChildAt(0) != view.findViewById(R.id.friendsListView)){
                         frameLayout.removeAllViews();
                         ListView listView = new ListView(requireContext());
                         listView.setId(R.id.friendsListView);
@@ -223,7 +224,7 @@ public class FriendsFragment extends Fragment {
 
                 } else if (tab.getPosition() == 1) {
 
-                    if (frameLayout.getChildAt(0) != (ScrollView) view.findViewById(R.id.pendingFriendsRoot)) {
+                    if (frameLayout.getChildAt(0) != view.findViewById(R.id.pendingFriendsRoot)) {
                         frameLayout.removeAllViews();
                         layoutInflater.inflate(R.layout.pending_friends, frameLayout);
 
@@ -295,7 +296,7 @@ public class FriendsFragment extends Fragment {
         FrameLayout frameLayout = view.findViewById(R.id.contentFrame);
 
 
-        if (frameLayout.getChildAt(0) != (ScrollView) view.findViewById(R.id.pendingFriendsRoot)) {
+        if (frameLayout.getChildAt(0) != view.findViewById(R.id.pendingFriendsRoot)) {
             frameLayout.removeAllViews();
             layoutInflater.inflate(R.layout.pending_friends, frameLayout);
 
