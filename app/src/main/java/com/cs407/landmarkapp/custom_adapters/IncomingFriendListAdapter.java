@@ -20,7 +20,7 @@ public class IncomingFriendListAdapter extends BaseAdapter {
 
     private final User appUser;
 
-    private Context context;
+    private final Context context;
     public IncomingFriendListAdapter(User appUser, Context context, List<User> incomingFriends){
         this.appUser = appUser;
         this.context = context;

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SignUp extends AppCompatActivity {
 
@@ -113,7 +114,8 @@ public class SignUp extends AppCompatActivity {
             String password = passwordInput.getText().toString().trim();
 
             User newUser = new User(username, password, email, new ArrayList<>(),
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                    new ArrayList<>(), new ArrayList<>(),
+                    Arrays.asList( R.drawable.uw_cs_building_badge, R.drawable.union_south_badge));
             appDatabase.userDao().insertUser(newUser);
             return null;
         }
