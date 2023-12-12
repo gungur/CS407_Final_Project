@@ -294,43 +294,7 @@ public class FriendsFragment extends Fragment {
         friendDialog.show(getActivity().getSupportFragmentManager(), "Friend Dialog");
     }
 
-    private void displayPendingFriends(View view) {
-        LayoutInflater layoutInflater = requireActivity().getLayoutInflater();
-        FrameLayout frameLayout = view.findViewById(R.id.contentFrame);
 
-
-        if (frameLayout.getChildAt(0) != view.findViewById(R.id.pendingFriendsRoot)) {
-            frameLayout.removeAllViews();
-            layoutInflater.inflate(R.layout.pending_friends, frameLayout);
-
-        }
-        ListView sentFriendsView = view.findViewById(R.id.sentFriendsListView);
-        if(appUser.getSentFriendRequests().size() > 0){
-            List<User> userSentFriendRequests = new ArrayList<>();
-            for (int userSentFriendRequestId : appUser.getSentFriendRequests()) {
-                appDatabase.userDao().getUserById(userSentFriendRequestId).observe(getViewLifecycleOwner(),
-                        new Observer<User>() {
-                            @Override
-                            public void onChanged(User user) {
-                                if (appUser.getSentFriendRequests().size() > 0) {
-
-
-                                    userSentFriendRequests.add(user);
-                                    SentFriendListAdapter sentFriendListAdapter = new SentFriendListAdapter(getContext(), userSentFriendRequests, appUser);
-
-                                    sentFriendsView.setAdapter(sentFriendListAdapter);
-
-                                }
-                            }
-                        });
-            }
-        }else{
-            SentFriendListAdapter sentFriendListAdapter = new SentFriendListAdapter(getContext(), new ArrayList<>(), appUser);
-
-            sentFriendsView.setAdapter(sentFriendListAdapter);
-        }
-
-    }
 
     private class AddTestFriends extends AsyncTask<User, Void, Void> {
 

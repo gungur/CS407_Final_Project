@@ -106,7 +106,7 @@
     <string name="cancel">Cancel</string>
     <string name="map">Map</string>
     <string name="badge_dialog_label">Badges: %1$d</string>
-    <string name="friends_not_found">No matching friends found</string>
+    <string name="friends_not_found">No matching friends found. Try adding this user as a friend.</string>
     <string name="incoming_friends_header">Incoming Friend Requests</string>
     <string name="sent_friends_header">Sent Friend Requests</string>
 </resources>
