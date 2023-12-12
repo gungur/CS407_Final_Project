@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 

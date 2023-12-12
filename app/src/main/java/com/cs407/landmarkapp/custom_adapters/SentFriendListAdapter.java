@@ -9,18 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cs407.landmarkapp.FriendDatabaseHelper;
 import com.cs407.landmarkapp.R;
 import com.cs407.landmarkapp.User;
 
 import java.util.List;
 
 public class SentFriendListAdapter extends BaseAdapter {
-    private List<User> sentFriendsList;
-    private LayoutInflater layoutInflater;
-    public SentFriendListAdapter(Context context, List<User> sentFriendsList){
+    private final List<User> sentFriendsList;
+    private final LayoutInflater layoutInflater;
+
+    private final Context context;
+
+    private final User appUser;
+    public SentFriendListAdapter(Context context, List<User> sentFriendsList, User appUser){
         layoutInflater = LayoutInflater.from(context);
         this.sentFriendsList = sentFriendsList;
-
+        this.appUser = appUser;
+        this.context = context;
     }
     @Override
     public int getCount() {
@@ -48,6 +54,8 @@ public class SentFriendListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Log.i("Test", "Cancelled friend request");
+                FriendDatabaseHelper friendDatabaseHelper = new FriendDatabaseHelper(appUser, context);
+                friendDatabaseHelper.cancelSentFriendRequest(sentFriendsList.get(position));
             }
         });
         return convertView;

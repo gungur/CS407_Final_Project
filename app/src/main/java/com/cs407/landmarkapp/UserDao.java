@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 @Dao
 public interface UserDao {
 
@@ -21,8 +23,13 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE user_id = :userId")
     LiveData<User> getUserById(int userId);
-    @Query("SELECT * FROM users WHERE username = :username")
+
+    @Query("SELECT * FROM users WHERE user_id IN (:userIds)")
+    LiveData<List<User>> getUsersByIds(List<Integer> userIds);
+
+    @Query("SELECT * FROM users where username = :username")
     User getUserByUsername(String username);
+
     @Query("SELECT * FROM users WHERE username = :username AND password = :password")
     User login(String username, String password);
 

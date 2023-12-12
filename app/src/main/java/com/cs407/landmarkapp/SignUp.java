@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class SignUp extends AppCompatActivity {
 
     private AppDatabase appDatabase;
@@ -110,7 +112,8 @@ public class SignUp extends AppCompatActivity {
             String username = usernameInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
 
-            User newUser = new User(username, password, email, null, null);
+            User newUser = new User(username, password, email, new ArrayList<>(),
+                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
             appDatabase.userDao().insertUser(newUser);
             return null;
         }
