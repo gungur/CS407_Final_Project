@@ -93,6 +93,17 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Switch
+        android:id="@+id/saveLogin"
+        android:layout_width="137dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="32dp"
+        android:text="Save Login"
+        app:layout_constraintBottom_toTopOf="@id/loginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginForm" />
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
@@ -103,7 +114,8 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginForm" />
+        app:layout_constraintTop_toBottomOf="@id/saveLogin" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
