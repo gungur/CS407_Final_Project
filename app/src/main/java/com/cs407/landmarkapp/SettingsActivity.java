@@ -10,6 +10,7 @@ import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         appDatabase = AppDatabase.getInstance(this);
 
+        LinearLayout usernameLayout = findViewById(R.id.username);
+
         TextView usernameText = (TextView) findViewById(R.id.usernameTxt);
         TextView emailText = (TextView) findViewById(R.id.emailTxt);
+        TextView backArrow = findViewById(R.id.backArrowSettings);
 
         SharedPreferences sharedPreferences = getSharedPreferences("userInfo",MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId",-1);
@@ -53,6 +57,22 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.commit();
 
                 Intent intent = new Intent(SettingsActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        usernameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this,ChangeUsername.class);
+                startActivity(intent);
+            }
+        });
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this,Home.class);
                 startActivity(intent);
             }
         });

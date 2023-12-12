@@ -25,6 +25,9 @@
         android:theme="@style/Theme.LandmarkApp"
         tools:targetApi="31">
         <activity
+            android:name=".ChangeUsername"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
@@ -47,7 +50,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="" />
+            android:value="AIzaSyAyic3Iy6ydabYxcBoSd_WhspT8jJPunD0" />
     </application>
 
 </manifest>
