@@ -64,6 +64,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .icon(BitmapFromVector(getContext(), R.drawable.uw_cs_building_badge));
         googleMap.addMarker(CSBlgBadge);
 
+        LatLng UnionSouth = new LatLng(43.072100761939716, -89.4076678353536);
+        MarkerOptions USouthBadge = new MarkerOptions().title("Union South").position(UnionSouth)
+                .icon(BitmapFromVector(getContext(), R.drawable.union_south_badge));
+        googleMap.addMarker(USouthBadge);
+
         displayMyLocation();
 
     }
