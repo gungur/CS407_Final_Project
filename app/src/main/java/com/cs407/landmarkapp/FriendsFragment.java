@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 
+import com.cs407.landmarkapp.custom_adapters.FriendsListAdapter;
 import com.cs407.landmarkapp.custom_adapters.IncomingFriendListAdapter;
 import com.cs407.landmarkapp.custom_adapters.SentFriendListAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -74,12 +75,12 @@ public class FriendsFragment extends Fragment {
                                 TabLayout tabLayout = getView().findViewById(R.id.tabs);
                                 tabLayout.getTabAt(0).select();
 
-                                List<User> sortedFriends = userFriends.stream()
+                                List<User> sorted = userFriends.stream()
                                         .sorted(Comparator.comparingInt(friend -> friend.getBadges().size()))
                                         .collect(Collectors.toList());
-                                Collections.reverse(sortedFriends);
+                                Collections.reverse(sorted);
 
-                                displayFriends(sortedFriends);
+                                displayFriends(sorted);
                             }
                         });
 
@@ -114,6 +115,7 @@ public class FriendsFragment extends Fragment {
 
         }
 
+        /*
         ArrayAdapter arrayAdapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1,
                 friendsToDisplay.stream().map(friend -> friend.getUsername()).collect(Collectors.toList()));
 
@@ -125,6 +127,22 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 displayFriendDialog(friendsToDisplay.get(position));
+            }
+        });
+        */
+
+        List<User> sorted = friendsToDisplay.stream()
+                .sorted(Comparator.comparingInt(friend -> friend.getBadges().size()))
+                .collect(Collectors.toList());
+        Collections.reverse(sorted);
+
+        FriendsListAdapter friendsListAdapter = new FriendsListAdapter(requireContext(), sorted);
+        friendsListView.setAdapter(friendsListAdapter);
+
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                displayFriendDialog(sorted.get(position));
             }
         });
 
