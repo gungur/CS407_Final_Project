@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 12;
     private ArrayList<MarkerOptions> badgeList = new ArrayList<>();
     private LatLng mLastKnownLocationLatLng;
+    private Location mCurrentLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +70,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap map) {
         googleMap = map;
+
+        int permission = ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permission == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            try {
+                    googleMap.setMyLocationEnabled(true);
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } catch (SecurityException e) {
+                Log.e("Exception: %s", e.getMessage());
+            }
+        }
 
         LatLng CSBuilding = new LatLng(43.07122779948943, -89.40657139659501);
         MarkerOptions CSBlgBadge = new MarkerOptions().title("CS Building").position(CSBuilding)
@@ -125,6 +141,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                     new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
                             googleMap.addMarker(new MarkerOptions().position(mLastKnownLocationLatLng).title("Current"));
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLocationLatLng, 10));
+                            mCurrentLocation = mLastKnownLocation;
                         }
                     });
         }
@@ -164,5 +181,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+    /*protected void createLocationRequest() {
+        LocationRequest locationRequest = LocationRequest.Builder()
+                .setIntervalMillis(10000)
+                .setFastestIntervalMillis(5000)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .build();
+    }*/
 
 }
