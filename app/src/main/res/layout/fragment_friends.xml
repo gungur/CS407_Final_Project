@@ -52,17 +52,40 @@
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchLayout">
+        android:layout_below="@id/searchLayout"
+        android:layout_above="@id/sortLayout">
 
         <ListView
             android:id="@+id/friendsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@android:color/secondary_text_dark"
-            android:dividerHeight="1dp">
+            android:dividerHeight="1dp"/>
 
-        </ListView>
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/sortLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/sortBtnName"
+            android:layout_width="160dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:text="Sort by Names" />
+
+        <Button
+            android:id="@+id/sortBtnBadge"
+            android:layout_width="160dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:text="Sort by Badges" />
+    </LinearLayout>
 
     <!-- TODO: connect it with user's friend list and display friend infos on each elements in list-->
 

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 
+import com.cs407.landmarkapp.custom_adapters.FriendsListAdapter;
 import com.cs407.landmarkapp.custom_adapters.IncomingFriendListAdapter;
 import com.cs407.landmarkapp.custom_adapters.SentFriendListAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -31,6 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -40,6 +42,7 @@ public class FriendsFragment extends Fragment {
     private AppDatabase appDatabase;
     private String searchInput;
     private User appUser;
+    private int sort = 0; // sorts friends list. default is 0, which sorts by badges. 1 will sort by name
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,9 +75,20 @@ public class FriendsFragment extends Fragment {
                                 userFriends = updatedFriends;
                                 TabLayout tabLayout = getView().findViewById(R.id.tabs);
                                 tabLayout.getTabAt(0).select();
-                                displayFriends(updatedFriends);
+
+                                if (sort == 0) {
+                                    sortByBadge();
+                                } else {
+                                    sortByName();
+                                }
                             }
                         });
+
+                        Button sortBtnBadge = getView().findViewById(R.id.sortBtnBadge);
+                        Button sortBtnName = getView().findViewById(R.id.sortBtnName);
+
+                        sortBtnBadge.setOnClickListener(v -> sortByBadge());
+                        sortBtnName.setOnClickListener(v -> sortByName());
 
                     }
 
@@ -107,6 +121,7 @@ public class FriendsFragment extends Fragment {
 
         }
 
+        /*
         ArrayAdapter arrayAdapter = new ArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1,
                 friendsToDisplay.stream().map(friend -> friend.getUsername()).collect(Collectors.toList()));
 
@@ -118,6 +133,31 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 displayFriendDialog(friendsToDisplay.get(position));
+            }
+        });
+        */
+
+        List<User> sorted;
+        //badge
+        if (sort == 0) {
+            sorted = friendsToDisplay.stream()
+                    .sorted(Comparator.comparingInt(friend -> friend.getBadges().size()))
+                    .collect(Collectors.toList());
+            Collections.reverse(sorted);
+        } else {
+            //name
+            sorted = friendsToDisplay.stream()
+                    .sorted(Comparator.comparing(User::getUsername))
+                    .collect(Collectors.toList());
+        }
+
+        FriendsListAdapter friendsListAdapter = new FriendsListAdapter(requireContext(), sorted);
+        friendsListView.setAdapter(friendsListAdapter);
+
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                displayFriendDialog(sorted.get(position));
             }
         });
 
@@ -294,6 +334,22 @@ public class FriendsFragment extends Fragment {
         friendDialog.show(getActivity().getSupportFragmentManager(), "Friend Dialog");
     }
 
+    private void sortByBadge() {
+        sort = 0;
+        List<User> sortedFriends = userFriends.stream()
+                .sorted(Comparator.comparingInt(friend -> friend.getBadges().size()))
+                .collect(Collectors.toList());
+        Collections.reverse(sortedFriends);
+        displayFriends(sortedFriends);
+    }
+
+    private void sortByName() {
+        sort = 1;
+        List<User> sortedFriends = userFriends.stream()
+                .sorted(Comparator.comparing(User::getUsername))
+                .collect(Collectors.toList());
+        displayFriends(sortedFriends);
+    }
 
 
     private class AddTestFriends extends AsyncTask<User, Void, Void> {
