@@ -31,6 +31,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -72,7 +73,13 @@ public class FriendsFragment extends Fragment {
                                 userFriends = updatedFriends;
                                 TabLayout tabLayout = getView().findViewById(R.id.tabs);
                                 tabLayout.getTabAt(0).select();
-                                displayFriends(updatedFriends);
+
+                                List<User> sortedFriends = userFriends.stream()
+                                        .sorted(Comparator.comparingInt(friend -> friend.getBadges().size()))
+                                        .collect(Collectors.toList());
+                                Collections.reverse(sortedFriends);
+
+                                displayFriends(sortedFriends);
                             }
                         });
 
