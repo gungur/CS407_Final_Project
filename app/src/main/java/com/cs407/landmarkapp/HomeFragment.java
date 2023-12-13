@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.location.LocationRequest;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -90,6 +92,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .icon(BitmapFromVector(getContext(), R.drawable.uw_cs_building_badge));
         googleMap.addMarker(CSBlgBadge);
 
+
         LatLng UnionSouth = new LatLng(43.072100761939716, -89.4076678353536);
         MarkerOptions USouthBadge = new MarkerOptions().title("Union South").position(UnionSouth)
                 .icon(BitmapFromVector(getContext(), R.drawable.union_south_badge));
@@ -100,6 +103,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         displayMyLocation();
 
+    }
+
+    private void addBadgeIfClose(LatLng coords) {
+        Location temp = new Location(LocationManager.GPS_PROVIDER);
+        temp.setLatitude(coords.latitude);
+        temp.setLongitude(coords.longitude);
+        float distance = mCurrentLocation.distanceTo(temp);
+        if (distance <= 50) {
+            // call function in ProfileFragment to add badge to badgesContainer
+        }
     }
 
     @Override
@@ -180,5 +193,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+    /*private static class addBadge extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            return null;
+        }
+    }*/
 
 }
