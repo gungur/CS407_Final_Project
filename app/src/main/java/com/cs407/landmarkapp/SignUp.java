@@ -113,11 +113,11 @@ public class SignUp extends AppCompatActivity {
             String email = emailInput.getText().toString().trim();
             String username = usernameInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
-            List<Integer> userDefaultBadges = new ArrayList<>();
 
             User newUser = new User(username, password, email, new ArrayList<>(),
                     new ArrayList<>(), new ArrayList<>(),
-                    userDefaultBadges);
+                    Arrays.asList(R.drawable.uw_cs_building_badge));
+
             appDatabase.userDao().insertUser(newUser);
             return null;
         }
