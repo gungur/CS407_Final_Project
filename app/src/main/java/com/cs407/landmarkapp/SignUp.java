@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SignUp extends AppCompatActivity {
 
@@ -112,10 +113,11 @@ public class SignUp extends AppCompatActivity {
             String email = emailInput.getText().toString().trim();
             String username = usernameInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
+            List<Integer> userDefaultBadges = new ArrayList<>();
 
             User newUser = new User(username, password, email, new ArrayList<>(),
                     new ArrayList<>(), new ArrayList<>(),
-                    Arrays.asList( R.drawable.uw_cs_building_badge, R.drawable.union_south_badge));
+                    userDefaultBadges);
             appDatabase.userDao().insertUser(newUser);
             return null;
         }
