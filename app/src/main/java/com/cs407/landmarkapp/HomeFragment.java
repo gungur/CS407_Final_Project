@@ -124,7 +124,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             mLastKnownLocationLatLng =
                                     new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
                             googleMap.addMarker(new MarkerOptions().position(mLastKnownLocationLatLng).title("Current"));
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLocationLatLng, 10));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLocationLatLng, 14));
                         }
                     });
         }
