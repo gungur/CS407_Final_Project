@@ -139,7 +139,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         if (task.isSuccessful() && mLastKnownLocation != null) {
                             mLastKnownLocationLatLng =
                                     new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
-                            googleMap.addMarker(new MarkerOptions().position(mLastKnownLocationLatLng).title("Current"));
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLocationLatLng, 10));
                             mCurrentLocation = mLastKnownLocation;
                         }
@@ -181,13 +180,5 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
-    /*protected void createLocationRequest() {
-        LocationRequest locationRequest = LocationRequest.Builder()
-                .setIntervalMillis(10000)
-                .setFastestIntervalMillis(5000)
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .build();
-    }*/
 
 }
