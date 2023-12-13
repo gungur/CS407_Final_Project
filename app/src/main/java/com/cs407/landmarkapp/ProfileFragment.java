@@ -40,7 +40,9 @@ public class ProfileFragment extends Fragment {
                 usernameText.setText(user.getUsername());
 
                 LinearLayout badgesContainer =  view.findViewById(R.id.badgesContainer);
-
+                if (user.getBadges() == null) {
+                    return;
+                }
                 for(int badgeId : user.getBadges()){
                     badgesContainer.addView(buildBadgeLayout(badgeId));
                 }
