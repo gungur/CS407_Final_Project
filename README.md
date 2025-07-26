@@ -133,3 +133,10 @@ The app uses Room database with the following main tables:
 - Add more landmarks and badge types
 - Implement push notifications for friend requests
 - Add social features (messaging, sharing)
+
+## Screenshots
+<img width="1440" height="3120" alt="image" src="https://github.com/user-attachments/assets/7b945c4e-7ba9-43cc-bd81-95040e2b709f" />
+
+<img width="1440" height="3120" alt="image" src="https://github.com/user-attachments/assets/a69d7233-99c7-4208-aab3-d4e2f08ff3ba" />
+
+<img width="1440" height="3120" alt="image" src="https://github.com/user-attachments/assets/d2817fe6-310b-458f-8612-f6ab1b8cef53" />
